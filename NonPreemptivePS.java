@@ -20,13 +20,15 @@ requirements or any other resource requirement.
 o Problem Starvation – low priority processes may never execute Solution
 Aging – as time progresses increase the priority of the process
 
-waiting time = start time – arrival time
+waiting time = turnaroundtime - processing time
 Turnaround time (latency): total time taken to execute a particular process =
 waiting time + processing time (Min.)
 */
 
 
 public class NonPreemptivePS {
+    private static final int AGING_THRESHOLD = 7;
+
     public static void schedule(List<Process> processes, int contextSwitchTime) {
         Collections.sort(processes, Comparator.comparingInt(Process::getPriority));
         printInformation(processes, contextSwitchTime);
@@ -40,25 +42,42 @@ public class NonPreemptivePS {
         System.out.println("Process Execution Order:");
         int executionCount = 0;
         for (Process process : processes) {
+            startTime = Math.max(currentTime, process.getArrivalTime());
+
         	process.setExecutionOrder(executionCount++);
             System.out.println("Executing Process " + process.getName() + " with Priority " + process.getPriority());
-            process.setWaitTime(startTime - process.getArrivalTime());
-            waitingTimeSum += process.waitingTime;
-            System.out.println("Waiting Time for Process " + process.getName() + " was " + process.waitingTime);
-            process.setTurnAroundTime(process.waitingTime + process.getBurstTime());
+            
+            currentTime += process.getBurstTime() + contextSwitchTime;
+            
+            process.setTurnAroundTime(currentTime - process.getArrivalTime());
+            // the first process arrival time is the original start time for all processes
             turnAroundTimeSum += process.turnAroundTime;
             System.out.println("Turnaround Time for Process " + process.getName() + " was " + process.turnAroundTime);
-            currentTime += process.getBurstTime() + contextSwitchTime;
+            
+
+            process.setWaitTime(process.turnAroundTime - process.getBurstTime());
+            waitingTimeSum += process.waitingTime;
+            System.out.println("Waiting Time for Process " + process.getName() + " was " + process.waitingTime);
+            ageProcesses(processes, currentTime);
+            
             
         }
         int avgWaitTime = waitingTimeSum/processes.size();
-        int avgTurnAroundTime = turnAroundTimeSum/processes.size();
         System.out.println("Average waiting time for processes was : " + avgWaitTime);
+
+        int avgTurnAroundTime = turnAroundTimeSum/processes.size();
         System.out.println("Average turn around time for processes was : " + avgTurnAroundTime);
     }
-    
-    // NOTE FOR MYSELF:
-    /* Implementation incomplete. I think there is something wrong in the way I'm calculating the starttime,
-     and also problem starvation has to be solved perhaps by increasing the priority as time passes.
-     */
+
+	private static void ageProcesses(List<Process> processes, int currentTime) {
+		for (Process process : processes) {
+            if (currentTime - process.getArrivalTime() > AGING_THRESHOLD) { // Adjust the aging threshold as needed
+            	if(process.getPriority()>0) {
+                    int newPriority = process.getPriority() - 1;
+                    process.setPriority(newPriority);
+            	}
+                System.out.println("Aging: Increased Priority for Process " + process.getName() + " to " + process.getPriority());
+            }
+        }
+	}
 }
