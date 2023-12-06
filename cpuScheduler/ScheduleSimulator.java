@@ -62,6 +62,9 @@ public class ScheduleSimulator {
         switch (schedulerType) {
         case 1:
             // Non-Preemptive SJF Scheduler Function
+        	//NonPreemptiveSJF scheduler = new NonPreemptiveSJF();
+        	//scheduler.schedule(processes, contextSwitchTime);
+        	NonPreemptiveSJF.schedule(processes, contextSwitchTime);
             break;
         case 2:
             // Call Shortest- Remaining Time First Scheduler Function

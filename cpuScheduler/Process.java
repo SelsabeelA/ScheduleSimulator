@@ -57,4 +57,9 @@ public class Process{
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+	@Override
+	public String toString() {
+	    return "Process " + name;
+	}
+
 }
