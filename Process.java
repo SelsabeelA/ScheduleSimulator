@@ -54,4 +54,7 @@ public class Process{
 	public void setExecutionOrder(int order) {
 		this.executionOrder = order;
 	}
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
 }
