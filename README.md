@@ -19,6 +19,18 @@ The assignment is divided into:
 - **Bonus** (10 marks)
    > graphical representation of Processes execution order
    
+## Program Input 
+- Number of processes 
+- Round Robin Time Quantum
+- context switching
+
+For Each Process you need to receive the following parameters from the user:
+- Process Name
+- Process Color(Graphical Representation)
+- Process Arrival Time 
+- Process Burst Time
+- Process Priority Numbe
+
 
 ## Program Output 
   For each scheduler output the following:
