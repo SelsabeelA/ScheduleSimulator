@@ -9,18 +9,14 @@
 
 ## Description
 The assignment is divided into: 
-- **Non-Preemptive SJF** (10 marks):
+- **Non-Preemptive SJF** (8 marks)
     > using context switching.
-- **SRTF** (5 mark)
+- **SRTF** (10 marks)
     > with the solving of starvation problem using any way can be executed correctly
 - **Non-Preemptive PS** (10 marks)
     > with the solving of starvation problem using any way can be executed correctly
-- **AG Scheduling.** (10 marks)
-    > contains the method to take two inputs:
-    - N: max number of connections a router can accept
-    - TC: total number of devices that wish to connect).
-    - TC lines that contain: Name of each device, and its Type.
- - **Bonus**
+- **AG Scheduling.** (32 marks)
+- **Bonus** (10 marks)
    > graphical representation of Processes execution order
    
 
