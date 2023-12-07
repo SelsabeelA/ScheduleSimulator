@@ -17,11 +17,11 @@ public class SRTF {
     public SRTF(List<Process> processes, int contextTime) {
         this.processes = processes;
         this.readyQueue = new PriorityQueue<>(new ShortestRemainingTimeComparator());
-        this.currentTime = 0;
+        executionOrder = new ArrayList<>();
         this.contextTime = contextTime;
+        this.currentTime = 0;
         totalTurnaroundTime = 0;
         totalWaitingTime = 0;
-        executionOrder = new ArrayList<>();
     }
 
     public void runScheduler() {
@@ -40,16 +40,20 @@ public class SRTF {
             if (!readyQueue.isEmpty()) {
                 Process currentProcess = readyQueue.poll();
 
+//                System.out.println("current is " + currentProcess.getName());
+
                 // Add the current process and the time it entered execution to the execution order
                 executionOrder.add(new Pair<>(currentProcess, currentTime));
 
                 // Execute the process for one time unit
                 currentProcess.setRemainingTime(currentProcess.getRemainingTime() - 1);
+                System.out.println("current process is " + currentProcess.getName() + " entered at time " + currentTime + " and its remaining time is " + currentProcess.getRemainingTime());
 
                 // Check if the process is completed
                 if (currentProcess.isCompleted()) {
-                    currentProcess.setTurnAroundTime(currentTime + contextTime - currentProcess.getArrivalTime());
+                    currentProcess.setTurnAroundTime(currentTime + contextTime - currentProcess.getArrivalTime() + 1);
                     currentProcess.setWaitTime(currentProcess.getTurnAroundTime() - currentProcess.getBurstTime());
+                    System.out.println("process " + currentProcess.getName() + " has turnaround equals " + currentProcess.getTurnAroundTime() + " and waiting " + currentProcess.getWaitingTime() );
                     totalWaitingTime += currentProcess.getWaitingTime();
                     totalTurnaroundTime += currentProcess.getTurnAroundTime();
                     readyQueue.remove(currentProcess);
@@ -72,11 +76,11 @@ public class SRTF {
         System.out.println("Average Turnaround Time: " + averageTurnaroundTime);
 
         // Print the execution order
-        System.out.println("Execution Order:");
-        for (Pair<Process, Integer> pair : executionOrder) {
-            System.out.println("Process " + pair.getFirst().getName() +
-                    " entered execution at time " + pair.getSecond());
-        }
+//        System.out.println("Execution Order:");
+//        for (Pair<Process, Integer> pair : executionOrder) {
+//            System.out.println("Process " + pair.getFirst().getName() +
+//                    " entered execution at time " + pair.getSecond());
+//        }
     }
 
     public static void main(String[] args) {
@@ -88,7 +92,7 @@ public class SRTF {
         processes.add(new Process("P4", "Green", 0, 3, 8));
         processes.add(new Process("P5", "Green", 4, 4, 2));
 
-        int contextTime = 2;
+        int contextTime = 0;
 
         SRTF srtfScheduler = new SRTF(processes, contextTime);
         srtfScheduler.runScheduler();
