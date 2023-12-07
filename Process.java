@@ -8,6 +8,7 @@ public class Process{
     private int PID;
     private int arrivalTime;
     private int burstTime;
+	private int remainingTime;
     private int priority;
     public int waitingTime;
     public int turnAroundTime;
@@ -20,6 +21,7 @@ public class Process{
         this.color = color;
     	this.arrivalTime = arrivalTime;
     	this.burstTime = burstTime;
+		this.remainingTime = this.burstTime;
     	this.priority = priority;
      }	     
 	public String getName() {
@@ -45,9 +47,25 @@ public class Process{
 	public int getPriority() {
 		return priority;
 	}
+	public int getExecutionOrder() {
+		return executionOrder;
+	}
+	public int getWaitingTime(){
+		return waitingTime;
+	}
+	public int getTurnAroundTime() {
+		return turnAroundTime;
+	}
+	public int getRemainingTime() {
+		return remainingTime;
+	}
 	public void setWaitTime(int myWaitTime) {
 		this.waitingTime = myWaitTime;
 	}
+	public void setRemainingTime(int remainingTime) {
+		this.remainingTime = remainingTime;
+	}
+
 	public void setTurnAroundTime(int myTurnAroundTime) {
 		this.turnAroundTime = myTurnAroundTime;
 	}
@@ -56,6 +74,9 @@ public class Process{
 	}
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+	public boolean isCompleted(){
+		return remainingTime == 0;
 	}
 	@Override
 	public String toString() {
