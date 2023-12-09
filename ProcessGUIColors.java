@@ -83,7 +83,7 @@ public class ProcessGUIColors extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            int currentTime = 0;
+            int currentTime = -1;
             for (ProcessBox box : processBoxes) {
                 int remainingTime = box.executionOrder - currentTime;
                 int boxWidth = Math.min(remainingTime, 1) * box.width; // Draw for one second
@@ -118,9 +118,9 @@ public class ProcessGUIColors extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             List<Pair<Process, Integer>> executionOrder = new ArrayList<>();
-            executionOrder.add(new Pair<>(new Process("P1", "Red", 2, 6, 3), 1));
-            executionOrder.add(new Pair<>(new Process("P2", "Blue", 5, 2, 1), 2));
-            executionOrder.add(new Pair<>(new Process("P3", "Green", 1, 8, 7), 3));
+            executionOrder.add(new Pair<>(new Process("P1", "Red", 2, 6, 3), 0));
+            executionOrder.add(new Pair<>(new Process("P2", "Blue", 5, 2, 1), 1));
+            executionOrder.add(new Pair<>(new Process("P3", "Green", 1, 8, 7), 2));
             executionOrder.add(new Pair<>(new Process("P1", "Red", 2, 6, 3), 4));
             executionOrder.add(new Pair<>(new Process("P4", "purple", 0, 3, 8), 5));
             executionOrder.add(new Pair<>(new Process("P5", "orange", 4, 4, 2), 6));
