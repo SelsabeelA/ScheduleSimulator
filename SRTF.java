@@ -8,6 +8,7 @@ public class SRTF {
     private int totalWaitingTime;
     private int totalTurnaroundTime;
     private int contextTime;
+    private static final int AGING_THRESHOLD = 7;
     private List<Pair<Process, Integer>> executionOrder;
     private Set<Process> processesAddedToQueue;
 
@@ -43,6 +44,7 @@ public class SRTF {
             if (!readyQueue.isEmpty()) {
                 Process currentProcess = readyQueue.poll();
                 currentProcess = handleContextSwitch(previousProcess, currentProcess);
+//                currentProcess = chooseProcess(currentProcess);
 
                 executionOrder.add(new Pair<>(currentProcess, currentTime));
 
@@ -100,6 +102,30 @@ public class SRTF {
         return 0;
     }
 
+    private void handleAging(Process chosenProcess) {
+        for (Process process : readyQueue) {
+            if (process != chosenProcess) {
+                int processPriority = process.getPriority();
+                process.setPriority(processPriority + 1); // Assuming you have an incrementPriority() method in your Process class
+            }
+        }
+    }
+    
+    public Process chooseProcess(Process currentProcess){
+//        Process currentProcess = readyQueue.poll();
+//        currentProcess = handleContextSwitch(previousProcess, currentProcess);
+        for (Process process : readyQueue) {
+            if (process.getPriority() >= AGING_THRESHOLD) {
+                System.out.println("the process with big aging is " + process.getName() + " " + process.getPriority());
+                currentProcess = process;
+                process.setPriority(process.getPriority() - 1);
+                handleAging(currentProcess);
+                return currentProcess;
+            }
+        }
+        return currentProcess;
+    }
+
     private void calculateTurnaround(Process process) {
         process.setTurnAroundTime(currentTime - process.getArrivalTime() + 1 + contextTime);
     }
@@ -120,6 +146,9 @@ public class SRTF {
             System.out.println("Process " + pair.getFirst().getName() +
                     " entered execution at time " + pair.getSecond());
         }
+    }
+    public List<Pair<Process, Integer>> getExecutionOrder(){
+        return executionOrder;
     }
 
     public void printPro(List<Process> processes) {
@@ -155,6 +184,8 @@ public class SRTF {
 
         SRTF srtfScheduler = new SRTF(processes, contextTime);
         srtfScheduler.runScheduler();
+        ProcessGUIColors processGUI = new ProcessGUIColors(srtfScheduler.getExecutionOrder()); // Context time is set to 1 second
+        processGUI.setVisible(true);
     }
 }
 
