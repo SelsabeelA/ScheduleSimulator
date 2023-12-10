@@ -1,6 +1,7 @@
 package cpuScheduler;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +11,15 @@ public class ProcessGUIColors extends JFrame {
     private List<ProcessBox> processBoxes;
     private List<Pair<Process, Integer>> executionOrder;
 
+    // Add JLabels to display statistics
+    private JLabel avgWaitingLabel;
+    private JLabel avgTurnAroundLabel;
+
+    // Add JLabels to display statistics
+    private JLabel statisticsLabel;
+
     public ProcessGUIColors(List<Pair<Process, Integer>> executionOrder) {
-        super("Processes Execution Order");
+        super("CPU Scheduling Graph");
 
         this.executionOrder = executionOrder;
         processBoxes = new ArrayList<>();
@@ -28,11 +36,11 @@ public class ProcessGUIColors extends JFrame {
         }
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(xCoordinate + 50, boxHeight + 200); // Increased the window width
+        setSize(1200, 600); // Set the window size
         setLocationRelativeTo(null);
 
-        ProcessPanel processPanel = new ProcessPanel();
-        setContentPane(processPanel);
+        // Create a JTable to display process information
+        JTable processTable = new JTable(getTableModel());
 
         // Set background color
         getContentPane().setBackground(new Color(240, 240, 240));
@@ -40,6 +48,39 @@ public class ProcessGUIColors extends JFrame {
         // Set custom font
         Font customFont = new Font("Arial", Font.PLAIN, 16);
         UIManager.put("Label.font", customFont);
+
+        // Create a mainPanel to hold the processPanel, processTable, and statisticsLabel
+        JPanel mainPanel = new JPanel(new BorderLayout());
+
+        // Create a panel to hold the processTable and add it to the mainPanel
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.setBorder(BorderFactory.createTitledBorder("Process Information"));
+        tablePanel.add(new JScrollPane(processTable), BorderLayout.CENTER);
+        mainPanel.add(tablePanel, BorderLayout.EAST);
+
+        // Create a panel to hold the ProcessPanel and add it to the mainPanel
+        ProcessPanel processPanel = new ProcessPanel();
+        mainPanel.add(processPanel, BorderLayout.CENTER);
+
+        // Create a panel to hold the statistics and add it to the mainPanel
+        JPanel statisticsPanel = new JPanel();
+        statisticsPanel.setLayout(new BoxLayout(statisticsPanel, BoxLayout.Y_AXIS));
+
+        // Add the "Statistics" label
+        statisticsLabel = new JLabel("<html><u><font color='red'>Statistics</font></u></html>");
+        statisticsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        statisticsPanel.add(statisticsLabel);
+
+        // Add the labels for average waiting time and average turn around time
+        avgWaitingLabel = new JLabel("Average Waiting Time: ");
+        avgTurnAroundLabel = new JLabel("Average Turn Around Time: ");
+
+        statisticsPanel.add(avgWaitingLabel);
+        statisticsPanel.add(avgTurnAroundLabel);
+
+        mainPanel.add(statisticsPanel, BorderLayout.SOUTH);
+
+        setContentPane(mainPanel);
     }
 
     // Utility method to convert a string to Color
@@ -60,6 +101,21 @@ public class ProcessGUIColors extends JFrame {
             default:
                 return Color.BLACK;
         }
+    }
+
+    // Method to create a DefaultTableModel for the JTable
+    private DefaultTableModel getTableModel() {
+        String[] columnNames = {"Process", "Color", "Name", "PID", "Priority"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+
+        for (Pair<Process, Integer> pair : executionOrder) {
+            Process process = pair.getFirst();
+
+            Object[] rowData = {process, process.getColor(), process.getName(), process.getPID(), process.getPriority()};
+            model.addRow(rowData);
+        }
+
+        return model;
     }
 
     private class ProcessBox {
@@ -111,25 +167,14 @@ public class ProcessGUIColors extends JFrame {
             }
         }
     }
+    
 
-// ... (Remaining code)
+    public void setAvgWaitingTime(float avgWaitingTime) {
+        avgWaitingLabel.setText("Average Waiting Time: " + avgWaitingTime);
+    }
 
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            List<Pair<Process, Integer>> executionOrder = new ArrayList<>();
-            executionOrder.add(new Pair<>(new Process("P1", "Red", 2, 6, 3), 0));
-            executionOrder.add(new Pair<>(new Process("P2", "Blue", 5, 2, 1), 1));
-            executionOrder.add(new Pair<>(new Process("P3", "Green", 1, 8, 7), 2));
-            executionOrder.add(new Pair<>(new Process("P1", "Red", 2, 6, 3), 4));
-            executionOrder.add(new Pair<>(new Process("P4", "purple", 0, 3, 8), 5));
-            executionOrder.add(new Pair<>(new Process("P5", "orange", 4, 4, 2), 6));
-            executionOrder.add(new Pair<>(new Process("P2", "Blue", 2, 6, 3), 7));
-            executionOrder.add(new Pair<>(new Process("P2", "Blue", 2, 6, 3), 8));
-            executionOrder.add(new Pair<>(new Process("P5", "Orange", 2, 6, 3), 9));
-
-            ProcessGUIColors processGUI = new ProcessGUIColors(executionOrder); // Context time is set to 1 second
-            processGUI.setVisible(true);
-        });
+    public void setAvgTurnAroundTime(float avgTurnAroundTime) {
+        avgTurnAroundLabel.setText("Average Turn Around Time: " + avgTurnAroundTime);
     }
 }
+
