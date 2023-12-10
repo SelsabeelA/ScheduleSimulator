@@ -24,8 +24,8 @@ public class NonPreemptiveSJF {
 	private static List<Process> processes;
     private static List<Pair<Process, Integer>> executionOrder;
 	private static int currentTime;
-	private static int totalTurnaround = 0;
-	private static int totalWaiting = 0;
+	private static float totalTurnaround = 0;
+	private static float totalWaiting = 0;
 	
     public static void schedule(List<Process> inputProcesses, int contextSwitchTime) {
     	
@@ -89,6 +89,13 @@ public class NonPreemptiveSJF {
     public static List<Pair<Process, Integer>> getExecutionOrder(){
         return executionOrder;
     }
+    
+	public static float getAvgWaiting() {
+		return totalWaiting;
+	}
+	public static float getAvgTurnAround() {
+		return totalTurnaround;
+	}
     
     private static void printInfo(Process currentProcess) {
         System.out.println("================================");
