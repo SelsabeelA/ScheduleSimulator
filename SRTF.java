@@ -24,13 +24,12 @@ public class SRTF {
     }
 
     private void updateReadyQueue() {
-
         for (Process process : processes) {
             if (process.getArrivalTime() <= currentTime && !process.isCompleted() && !processesAddedToQueue.contains(process)) {
                 readyQueue.add(process);
-                processesAddedToQueue.add(process);
             }
         }
+//        printReady(readyQueue);
     }
 
     public void runScheduler() {
@@ -44,12 +43,12 @@ public class SRTF {
             if (!readyQueue.isEmpty()) {
                 Process currentProcess = readyQueue.poll();
                 currentProcess = handleContextSwitch(previousProcess, currentProcess);
-//                currentProcess = chooseProcess(currentProcess);
+                currentProcess = chooseProcess(currentProcess);
 
                 executionOrder.add(new Pair<>(currentProcess, currentTime));
 
                 int increaseCompleted = executeProcess(currentProcess);
-                if (increaseCompleted == 1){
+                if (increaseCompleted == 1) {
                     completedProcesses++;
                 }
 
@@ -62,22 +61,20 @@ public class SRTF {
 
     private Process handleContextSwitch(Process previousProcess, Process currentProcess) {
         if (previousProcess != null && !currentProcess.getName().equals(previousProcess.getName())) {
+            // Add context time only if there is a current process, and it's not the same as the previous one
 //            System.out.println("current process was " + currentProcess.getName());
 //            System.out.println("current time before context: " + currentTime);
             currentTime += contextTime;
-//            System.out.println("current time after context: " + currentTime);
+//            System.out.println("current time after context: " + currentTime);            }
 
             readyQueue.clear();
             processesAddedToQueue.clear();
             updateReadyQueue();
 
-            Process curr =  readyQueue.poll(); // Remove the current process as it will be added back after the context switch
-//            System.out.println("current process now is " + currentProcess.getName());
-            return curr;
+            return readyQueue.poll();
         }
         return currentProcess;
     }
-
     private int executeProcess(Process currentProcess){
         currentProcess.setRemainingTime(currentProcess.getRemainingTime() - 1);
 
@@ -106,23 +103,32 @@ public class SRTF {
         for (Process process : readyQueue) {
             if (process != chosenProcess) {
                 int processPriority = process.getPriority();
-                process.setPriority(processPriority + 1); // Assuming you have an incrementPriority() method in your Process class
+                process.setPriority(processPriority + 1);
             }
+            else{
+                chosenProcess.setPriority(chosenProcess.getPriority() - 1);
+            }
+        }
+        if (chosenProcess != null) {
+            chosenProcess.setPriority(chosenProcess.getPriority() - 1);
         }
     }
-    
-    public Process chooseProcess(Process currentProcess){
-//        Process currentProcess = readyQueue.poll();
-//        currentProcess = handleContextSwitch(previousProcess, currentProcess);
-        for (Process process : readyQueue) {
-            if (process.getPriority() >= AGING_THRESHOLD) {
-                System.out.println("the process with big aging is " + process.getName() + " " + process.getPriority());
-                currentProcess = process;
-                process.setPriority(process.getPriority() - 1);
-                handleAging(currentProcess);
-                return currentProcess;
-            }
+    public Process chooseProcess(Process currentProcess) {
+        if (currentProcess.getPriority() >= AGING_THRESHOLD){
+            return currentProcess;
         }
+        if (!readyQueue.isEmpty()) {
+            Process highestPriorityProcess = currentProcess;
+
+            for (Process process : readyQueue) {
+                if (process.getPriority() > highestPriorityProcess.getPriority() && process.getPriority() >= AGING_THRESHOLD) {
+                    highestPriorityProcess = process;
+                }
+            }
+            // Otherwise, return the process with the highest priority in the ready queue
+            currentProcess = highestPriorityProcess;
+        }
+        handleAging(currentProcess);
         return currentProcess;
     }
 
@@ -138,14 +144,28 @@ public class SRTF {
         double averageWaitingTime = (double) totalWaitingTime / processes.size();
         double averageTurnaroundTime = (double) totalTurnaroundTime / processes.size();
 
-        System.out.println("Average Waiting Time: " + averageWaitingTime);
-        System.out.println("Average Turnaround Time: " + averageTurnaroundTime);
+        System.out.println("================================");
 
         System.out.println("Execution Order:");
         for (Pair<Process, Integer> pair : executionOrder) {
             System.out.println("Process " + pair.getFirst().getName() +
                     " entered execution at time " + pair.getSecond());
         }
+        System.out.println("================================");
+
+        for (Process process : processes) {
+            int turnaroundTime = process.getTurnAroundTime();
+            int waitingTime = process.getWaitingTime();
+
+            System.out.println("Process " + process.getName() + ":");
+            System.out.println("  Turnaround Time: " + turnaroundTime);
+            System.out.println("  Waiting Time: " + waitingTime);
+
+            System.out.println("================================");
+        }
+
+        System.out.println("Average Waiting Time: " + averageWaitingTime);
+        System.out.println("Average Turnaround Time: " + averageTurnaroundTime);
     }
     public List<Pair<Process, Integer>> getExecutionOrder(){
         return executionOrder;
@@ -165,6 +185,7 @@ public class SRTF {
         System.out.println(" ");
     }
     public void printReady(PriorityQueue<Process> readyQueue) {
+        System.out.println("the ready queue is: ");
         for (Process r : readyQueue){
             System.out.print(r + " ");
         }
