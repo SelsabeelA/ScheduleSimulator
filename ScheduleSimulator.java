@@ -2,15 +2,18 @@ package cpuScheduler;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.text.DecimalFormat;
 
 public class ScheduleSimulator {    
 	private List<Process> processes;
-
+	public float avgWaitingTime;
+	public float avgTurnAroundTime;
 
 	public ScheduleSimulator() {
     processes = new ArrayList<>();
-}
+	float avgWaitingTime = 0;
+	float avgTurnAroundTime = 0;
+	}
     
     public static void main(String[] args) {
         ScheduleSimulator scheduleSimulator = new ScheduleSimulator();
@@ -80,7 +83,9 @@ public class ScheduleSimulator {
         case 3:
             // Call Non-preemptive Priority Scheduler Function
         	NonPreemptivePS.schedule(processes, contextSwitchTime);
-        	//execOrder = NonPreemptivePS.getExecutionOrder();
+        	execOrder = NonPreemptivePS.getExecutionOrder();
+        	avgWaitingTime = NonPreemptivePS.getAvgWaiting(); 
+        	avgTurnAroundTime = NonPreemptivePS.getAvgTurnAround();
         	
         	// I'm implementing the printing inside the function itself since the printing process 
         	// will differ from scheduler to scheduler
@@ -95,12 +100,14 @@ public class ScheduleSimulator {
         }
         
     	ProcessGUIColors processGUI = new ProcessGUIColors(execOrder);
+        // Update the GUI with the calculated statistics
+        processGUI.setAvgWaitingTime(avgWaitingTime);
+        processGUI.setAvgTurnAroundTime(avgTurnAroundTime);
+
     	processGUI.setVisible(true);
 	}
 
 }
-
-
 
 
 
