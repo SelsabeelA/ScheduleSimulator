@@ -40,8 +40,10 @@ public class NonPreemptiveSJF {
     	}
     	
     	//print the Average Waiting and Turnaround Time
+        System.out.println("================================");
     	System.out.println("Average Waiting Time for Processes was: " + totalWaiting/inputProcesses.size());
     	System.out.println("Average Turnaround Time for Processes was: " + totalTurnaround/inputProcesses.size());
+        System.out.println("================================");
     }
     
     private static void addAndSort() {
@@ -75,6 +77,7 @@ public class NonPreemptiveSJF {
     		//remove the process
     		SJP.remove(0);
     	}
+
     }
     
     private static void addProcessToGUI(Process p) {
@@ -88,15 +91,16 @@ public class NonPreemptiveSJF {
     }
     
     private static void printInfo(Process currentProcess) {
+        System.out.println("================================");
 		System.out.println("Executing " + currentProcess);
 		
 		//turn around time
 		int turnaroundTime = currentTime - currentProcess.getArrivalTime();
-		System.out.println("Turnaround Time for " + currentProcess + " was " + turnaroundTime);
+		System.out.println("Turnaround Time: " + turnaroundTime);
 		
 		//waiting time
 		int waitingTime = turnaroundTime - currentProcess.getBurstTime();
-		System.out.println("Waiting Time for " + currentProcess + " was " + waitingTime);
+		System.out.println("Waiting Time: " + waitingTime);
 		
 		// add to total waiting
 		totalWaiting += waitingTime;

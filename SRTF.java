@@ -193,21 +193,6 @@ public class SRTF {
 
     }
 
-    public static void main(String[] args) {
-        List<Process> processes = new ArrayList<>();
-        processes.add(new Process("P1", "Red", 2, 6, 3));
-        processes.add(new Process("P2", "Blue", 5, 2, 1));
-        processes.add(new Process("P3", "Green", 1, 8, 7));
-        processes.add(new Process("P4", "purple", 0, 3, 8));
-        processes.add(new Process("P5", "orange", 4, 4, 2));
-
-        int contextTime = 1;
-
-        SRTF srtfScheduler = new SRTF(processes, contextTime);
-        srtfScheduler.runScheduler();
-        ProcessGUIColors processGUI = new ProcessGUIColors(srtfScheduler.getExecutionOrder()); // Context time is set to 1 second
-        processGUI.setVisible(true);
-    }
 }
 
 class Pair<F, S> {

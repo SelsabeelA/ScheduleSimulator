@@ -70,6 +70,9 @@ public class ScheduleSimulator {
             break;
         case 2:
             // Call Shortest- Remaining Time First Scheduler Function
+            SRTF srtfScheduler = new SRTF(processes, contextSwitchTime);
+            srtfScheduler.runScheduler();
+            execOrder = srtfScheduler.getExecutionOrder();
             break;
         case 3:
             // Call Non-preemptive Priority Scheduler Function
