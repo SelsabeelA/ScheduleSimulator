@@ -1,32 +1,17 @@
 package cpuScheduler;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/*
-NOTES FROM LAB:
-● Preemptive scheduling: The preemptive scheduling is prioritized. The highest
-priority process should always be the process that is currently running.
-● Non-Preemptive scheduling: When a process enters the state of running, it
-cannot be preempted (interrupted) until completes finishes its service time.
-3. Priority Scheduling :
-o A priority number (integer) is associated with each process
-o CPU is allocated to the process with the highest priority (smallest
-integer≡ highest priority)
-
-o Priority can be decided based on memory requirements, time
-requirements or any other resource requirement.
-o Problem Starvation – low priority processes may never execute Solution
-Aging – as time progresses increase the priority of the process
-
-waiting time = turnaroundtime - processing time
-Turnaround time (latency): total time taken to execute a particular process =
-waiting time + processing time (Min.)
-*/
 
 
 public class NonPreemptivePS {
+    static List<Pair<Process, Integer>> executionList = new ArrayList<>();
+    public static float scheduleAvgWait;
+    public static float scheduleAvgTurn;
     private static final int AGING_THRESHOLD = 7;
 
     public static void schedule(List<Process> processes, int contextSwitchTime) {
@@ -43,10 +28,9 @@ public class NonPreemptivePS {
         int executionCount = 0;
         for (Process process : processes) {
             startTime = Math.max(currentTime, process.getArrivalTime());
-
         	process.setExecutionOrder(executionCount++);
             System.out.println("Executing Process " + process.getName() + " with Priority " + process.getPriority());
-            
+            executionList.add(new Pair<>(process, startTime));
             currentTime += process.getBurstTime() + contextSwitchTime;
             
             process.setTurnAroundTime(currentTime - process.getArrivalTime());
@@ -62,11 +46,18 @@ public class NonPreemptivePS {
             
             
         }
-        int avgWaitTime = waitingTimeSum/processes.size();
+        float avgWaitTime = waitingTimeSum/processes.size();
         System.out.println("Average waiting time for processes was : " + avgWaitTime);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String roundedValue = decimalFormat.format(avgWaitTime);
+        scheduleAvgWait = Float.parseFloat(roundedValue);
 
-        int avgTurnAroundTime = turnAroundTimeSum/processes.size();
+
+        float avgTurnAroundTime = turnAroundTimeSum/processes.size();
         System.out.println("Average turn around time for processes was : " + avgTurnAroundTime);
+        roundedValue = decimalFormat.format(avgTurnAroundTime);
+        scheduleAvgTurn = Float.parseFloat(roundedValue);
+
     }
 
 	private static void ageProcesses(List<Process> processes, int currentTime) {
@@ -80,4 +71,16 @@ public class NonPreemptivePS {
             }
         }
 	}
+
+	public static List<Pair<Process, Integer>> getExecutionOrder() {
+		return executionList;
+	}
+
+	public static float getAvgWaiting() {
+		return scheduleAvgWait;
+	}
+	public static float getAvgTurnAround() {
+		return scheduleAvgTurn;
+	}
+	
 }
