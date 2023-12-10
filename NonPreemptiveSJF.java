@@ -22,6 +22,7 @@ public class NonPreemptiveSJF {
 
 	private static List<Process> SJP;
 	private static List<Process> processes;
+    private static List<Pair<Process, Integer>> executionOrder;
 	private static int currentTime;
 	private static int totalTurnaround = 0;
 	private static int totalWaiting = 0;
@@ -30,6 +31,7 @@ public class NonPreemptiveSJF {
     	
     	SJP = new ArrayList<>();
     	processes = new ArrayList<>(inputProcesses);
+        executionOrder = new ArrayList<>();
     	currentTime = processes.get(0).getArrivalTime();
     	
     	while (!processes.isEmpty()) {
@@ -37,6 +39,7 @@ public class NonPreemptiveSJF {
     		executeAndRemove(contextSwitchTime);
     	}
     	
+    	//print the Average Waiting and Turnaround Time
     	System.out.println("Average Waiting Time for Processes was: " + totalWaiting/inputProcesses.size());
     	System.out.println("Average Turnaround Time for Processes was: " + totalTurnaround/inputProcesses.size());
     }
@@ -44,10 +47,12 @@ public class NonPreemptiveSJF {
     private static void addAndSort() {
     	
     	int i = 0;
+    	//add the arrived processes to the queue in order to be sorted
         while (i < processes.size() && processes.get(i).getArrivalTime() <= currentTime) {
             SJP.add(processes.get(i));
             processes.remove(i);
         }
+        //sort the added processes
     	Collections.sort(SJP, Comparator.comparingInt(Process::getBurstTime));
     	
     }
@@ -56,6 +61,9 @@ public class NonPreemptiveSJF {
     	
     	while (!SJP.isEmpty()) {		//for each process
     		final Process currentProcess = SJP.get(0);
+    		
+    		//include the process in the execution order to be visualized later
+    		addProcessToGUI(currentProcess);
     		    		
     		//update current time
     		currentTime += currentProcess.getBurstTime();
@@ -66,6 +74,12 @@ public class NonPreemptiveSJF {
 
     		//remove the process
     		SJP.remove(0);
+    	}
+    }
+    
+    private static void addProcessToGUI(Process p) {
+    	for (int i = 0; i < p.getBurstTime(); i++) {
+            executionOrder.add(new Pair<>(p, i + currentTime));
     	}
     }
     
