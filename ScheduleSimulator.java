@@ -58,6 +58,7 @@ public class ScheduleSimulator {
         System.out.println("4. AG Scheduling");
 
         int schedulerType = scanner.nextInt();
+        List<Pair<Process, Integer>> execOrder = new ArrayList<>();
         
         switch (schedulerType) {
         case 1:
@@ -65,6 +66,7 @@ public class ScheduleSimulator {
         	//NonPreemptiveSJF scheduler = new NonPreemptiveSJF();
         	//scheduler.schedule(processes, contextSwitchTime);
         	NonPreemptiveSJF.schedule(processes, contextSwitchTime);
+        	execOrder = NonPreemptiveSJF.getExecutionOrder();
             break;
         case 2:
             // Call Shortest- Remaining Time First Scheduler Function
@@ -72,6 +74,8 @@ public class ScheduleSimulator {
         case 3:
             // Call Non-preemptive Priority Scheduler Function
         	NonPreemptivePS.schedule(processes, contextSwitchTime);
+        	//execOrder = NonPreemptivePS.getExecutionOrder();
+        	
         	// I'm implementing the printing inside the function itself since the printing process 
         	// will differ from scheduler to scheduler
             break;
@@ -81,6 +85,9 @@ public class ScheduleSimulator {
         default:
             System.out.println("Please enter a type number, i.e 1 or 2 or 3 or 4.");
         }
+        
+    	ProcessGUIColors processGUI = new ProcessGUIColors(execOrder);
+    	processGUI.setVisible(true);
 	}
 
 }

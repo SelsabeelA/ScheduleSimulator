@@ -83,6 +83,10 @@ public class NonPreemptiveSJF {
     	}
     }
     
+    public static List<Pair<Process, Integer>> getExecutionOrder(){
+        return executionOrder;
+    }
+    
     private static void printInfo(Process currentProcess) {
 		System.out.println("Executing " + currentProcess);
 		
