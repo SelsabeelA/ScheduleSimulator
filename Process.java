@@ -1,5 +1,3 @@
-package cpuScheduler;
-
 public class Process{
 	private static int idCounter = 3280;
 	private String name;
@@ -12,6 +10,8 @@ public class Process{
     private int priority;
     public int waitingTime;
     public int turnAroundTime;
+	public int AGFactor;
+	public int quantum;
     // the amount of private variables might seem excessive
     // but they will be important for the graphical representation
 
@@ -38,6 +38,11 @@ public class Process{
 
 	public int getArrivalTime() {
 		return arrivalTime;
+	}
+
+	public void setBurstTime(int NewBurstTime)
+	{
+		this.burstTime = NewBurstTime;
 	}
 
 	public int getBurstTime() {
@@ -82,5 +87,20 @@ public class Process{
 	public String toString() {
 	    return "Process " + name;
 	}
+
+	public void setAgFactor(int calculateAGFactor) {
+		this.AGFactor = calculateAGFactor;
+	}
+
+    public int getQuantumTime() {
+		return quantum;
+	}
+	
+    public void setQuantumTime(int newQuantum) {
+		this.quantum = newQuantum;
+    }
+    public int getAGFactor() {
+        return AGFactor;
+    }
 
 }
