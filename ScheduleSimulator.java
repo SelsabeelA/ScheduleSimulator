@@ -61,6 +61,7 @@ public class ScheduleSimulator {
         List<Pair<Process, Integer>> execOrder = new ArrayList<>();
         
         switch (schedulerType) {
+            
         case 1:
             // Non-Preemptive SJF Scheduler Function
         	//NonPreemptiveSJF scheduler = new NonPreemptiveSJF();
@@ -68,12 +69,14 @@ public class ScheduleSimulator {
         	NonPreemptiveSJF.schedule(processes, contextSwitchTime);
         	execOrder = NonPreemptiveSJF.getExecutionOrder();
             break;
+
         case 2:
             // Call Shortest- Remaining Time First Scheduler Function
             SRTF srtfScheduler = new SRTF(processes, contextSwitchTime);
             srtfScheduler.runScheduler();
             execOrder = srtfScheduler.getExecutionOrder();
             break;
+
         case 3:
             // Call Non-preemptive Priority Scheduler Function
         	NonPreemptivePS.schedule(processes, contextSwitchTime);
@@ -82,9 +85,11 @@ public class ScheduleSimulator {
         	// I'm implementing the printing inside the function itself since the printing process 
         	// will differ from scheduler to scheduler
             break;
+
         case 4:
-            // Call AG Scheduling Function
-            break;
+        AGScheduling.schedule(processes, rrQuantumTime);
+        break;
+
         default:
             System.out.println("Please enter a type number, i.e 1 or 2 or 3 or 4.");
         }
@@ -94,6 +99,7 @@ public class ScheduleSimulator {
 	}
 
 }
+
 
 
 
