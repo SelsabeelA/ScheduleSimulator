@@ -14,8 +14,11 @@ public class Process{
     public int turnAroundTime;
 	public int AGFactor;
 	public int quantum;
+	public int KilledTime;
+
     // the amount of private variables might seem excessive
     // but they will be important for the graphical representation
+
 
     public Process(String name, String color, int arrivalTime, int burstTime, int priority) {
         this.PID = idCounter++;
@@ -104,5 +107,14 @@ public class Process{
     public int getAGFactor() {
         return AGFactor;
     }
+	public void setKilledTime(int time) {
+		this.KilledTime = time;
+
+	}
+	public int getKilledTime() {
+	return KilledTime;
+ 	}
+
+
 
 }

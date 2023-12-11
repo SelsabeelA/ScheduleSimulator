@@ -3,6 +3,10 @@ package cpuScheduler;
 import java.util.*;
 
 public class AGScheduling {
+public static float averageWaitingTime;
+    public static float averageTurnaroundTime;
+    static List<Pair<Process, Integer>> executionList = new ArrayList<>();
+
     public static void schedule(List<Process> processes, int QuantumTime) {
 
         Queue<Process> readyQueue = new LinkedList<>(processes); 
@@ -77,21 +81,31 @@ public class AGScheduling {
             }
             counter=0;
             halfQuantum = (int) Math.ceil(0.5 * runningProcess.getQuantumTime());
-
+// add the pairs
+            if(runningProcess.getRemainingTime() > halfQuantum){
+                for(int i = time ; i < time+halfQuantum; i++)
+                {
+                    executionList.add(new Pair<>(runningProcess, i));
+                }
+            }
             // Scenario 3.1: Process completes within its Quantum time
             if (runningProcess.getRemainingTime() <= halfQuantum) {
-                time += runningProcess.getRemainingTime();
-                for (Process readyProcess : readyQueue) {
-                    if (readyProcess == runningProcess) {
-                        readyProcess.setTurnAroundTime(time - readyProcess.getArrivalTime());
-                        readyProcess.setRemainingTime(0);
-                        readyProcess.setQuantumTime(0);
-                        dieList.add(readyProcess);
-                        runningProcess = inQueue.poll();
-                        breakloop = false;
-                        break;
+                for(int i = time ; i < time+runningProcess.getRemainingTime(); i++)
+                    {
+                        executionList.add(new Pair<>(runningProcess, i));
                     }
-                }
+                    time += runningProcess.getRemainingTime();
+                    for (Process readyProcess : readyQueue) {
+                        if (readyProcess == runningProcess) {
+                                                    readyProcess.setRemainingTime(0);
+                            readyProcess.setQuantumTime(0);
+                            readyProcess.setKilledTime(time);
+                            dieList.add(readyProcess);
+                            runningProcess = inQueue.poll();
+                            breakloop = false;
+                            break;
+                        }
+                    }
 
             }
 
@@ -144,6 +158,7 @@ public class AGScheduling {
 
                 }
                 if(breakloop){
+                    executionList.add(new Pair<>(runningProcess, time));
                     time++;
                     counter++;
                 }
@@ -153,6 +168,7 @@ public class AGScheduling {
                         if (readyProcess == runningProcess) {
                             readyProcess.setRemainingTime(0);
                             readyProcess.setQuantumTime(0);
+                            readyProcess.setKilledTime(time);
                             dieList.add(readyProcess);
                             readyQueue.remove(runningProcess);
                             AgFactorList.remove(runningProcess);
@@ -185,6 +201,9 @@ public class AGScheduling {
 
             }
         }
+
+
+
         //print the Final Quantum
         StringBuilder finalQuantumPrint = new StringBuilder("Quantum (");
         for (Process process : processes) {
@@ -193,6 +212,24 @@ public class AGScheduling {
         finalQuantumPrint.delete(finalQuantumPrint.length() - 2, finalQuantumPrint.length());
         finalQuantumPrint.append(")");
         System.out.println(finalQuantumPrint);
+
+        calculateWaitingTime(processes);
+        printWaitingTime(processes);
+        calculateTurnaroundTime(processes);
+        printTurnaroundTime(processes);
+
+        calculateAverageWaitingTime(processes);
+        calculateAverageTurnaroundTime(processes);
+        System.out.println(averageTurnaroundTime);
+        System.out.println(averageWaitingTime);
+
+        for (Pair<Process, Integer> pair : executionList) {
+            Process process = pair.getFirst();
+            Integer value = pair.getSecond();
+            System.out.println("Process: " + process + ", Value: " + value);
+        }
+
+
 
         }
 
@@ -235,5 +272,67 @@ private static int calculateAGFactor(Process process) {
         }
     }
 
+// Function to calculate waiting time for each process
+    private static void calculateWaitingTime(List<Process> processes) {
+        for (Process process : processes) {
+            int waitingTime = process.getKilledTime() - process.getArrivalTime() - process.getBurstTime();
+            process.setWaitTime(waitingTime);
+        }
+    }
+
+    // Function to calculate waiting time for each process
+    private static void calculateTurnaroundTime(List<Process> processes) {
+        for (Process process : processes) {
+            int turnAroundTime = process.getWaitingTime() + process.getBurstTime();
+            process.setTurnAroundTime(turnAroundTime);
+        }
+    }
+
+    // Function to print waiting time for each process
+    private static void printWaitingTime(List<Process> processes) {
+        System.out.println("\nWaiting Time for each process:");
+        for (Process process : processes) {
+            System.out.println("Process " + process.getName() + ": " + process.getWaitingTime());
+        }
+    }
+    // Function to print turnaround time for each process
+    private static void printTurnaroundTime(List<Process> processes) {
+        System.out.println("\nTurnaround Time for each process:");
+        for (Process process : processes) {
+            System.out.println("Process " + process.getName() + ": " + process.getTurnAroundTime());
+        }
+    }
+
+    // Function to calculate average waiting time
+    private static void calculateAverageWaitingTime(List<Process> processes) {
+        int totalWaitingTime = 0;
+        for (Process process : processes) {
+            totalWaitingTime += process.getWaitingTime();
+        }
+        averageWaitingTime = (float) ((double) totalWaitingTime / processes.size());
+    }
+
+    // Function to calculate average turnaround time
+    private static void calculateAverageTurnaroundTime(List<Process> processes) {
+        int totalTurnaroundTime = 0;
+        for (Process process : processes) {
+            totalTurnaroundTime += process.getTurnAroundTime();
+        }
+        averageTurnaroundTime = (float) ((double) totalTurnaroundTime / processes.size());
+    }
+
+    public static float getAverageTurnaroundTime()
+    {
+        return averageTurnaroundTime;
+    }
+
+    public static float getAverageWaitingTime()
+    {
+        return averageWaitingTime;
+    }
+
+    public static List<Pair<Process, Integer>> getExecutionOrder() {
+    return executionList;
+}
 
 }
