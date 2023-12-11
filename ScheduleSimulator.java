@@ -10,9 +10,9 @@ public class ScheduleSimulator {
 	public float avgTurnAroundTime;
 
 	public ScheduleSimulator() {
-	    processes = new ArrayList<>();
-		float avgWaitingTime = 0;
-		float avgTurnAroundTime = 0;
+    processes = new ArrayList<>();
+	float avgWaitingTime = 0;
+	float avgTurnAroundTime = 0;
 	}
     
     public static void main(String[] args) {
@@ -71,17 +71,13 @@ public class ScheduleSimulator {
         	//scheduler.schedule(processes, contextSwitchTime);
         	NonPreemptiveSJF.schedule(processes, contextSwitchTime);
         	execOrder = NonPreemptiveSJF.getExecutionOrder();
-        	avgWaitingTime = NonPreemptiveSJF.getAvgWaiting(); 
-        	avgTurnAroundTime = NonPreemptiveSJF.getAvgTurnAround();
             break;
 
         case 2:
-            // Call Shortest-Remaining Time First Scheduler Function
+            // Call Shortest- Remaining Time First Scheduler Function
             SRTF srtfScheduler = new SRTF(processes, contextSwitchTime);
             srtfScheduler.runScheduler();
             execOrder = srtfScheduler.getExecutionOrder();
-        	avgWaitingTime = srtfScheduler.getAvgWaiting();
-        	avgTurnAroundTime = srtfScheduler.getAvgTurnAround();
             break;
 
         case 3:
@@ -96,7 +92,7 @@ public class ScheduleSimulator {
             break;
 
         case 4:
-        	AGScheduling.schedule(processes, rrQuantumTime);
+        AGScheduling.schedule(processes, rrQuantumTime);
         break;
 
         default:
@@ -107,11 +103,8 @@ public class ScheduleSimulator {
         // Update the GUI with the calculated statistics
         processGUI.setAvgWaitingTime(avgWaitingTime);
         processGUI.setAvgTurnAroundTime(avgTurnAroundTime);
-
+        processGUI.setSchedulerType(schedulerType);
     	processGUI.setVisible(true);
 	}
 
 }
-
-
-
