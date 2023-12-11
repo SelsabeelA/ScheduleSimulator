@@ -1,3 +1,5 @@
+package cpuScheduler;
+
 import java.util.*;
 
 public class AGScheduling {

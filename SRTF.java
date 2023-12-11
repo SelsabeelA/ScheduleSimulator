@@ -43,7 +43,7 @@ public class SRTF {
             if (!readyQueue.isEmpty()) {
                 Process currentProcess = readyQueue.poll();
                 currentProcess = handleContextSwitch(previousProcess, currentProcess);
-                currentProcess = chooseProcess(currentProcess);
+//                currentProcess = chooseProcess(currentProcess);
 
                 executionOrder.add(new Pair<>(currentProcess, currentTime));
 
@@ -193,6 +193,18 @@ public class SRTF {
 
     }
 
+    public void setTotalTurnaroundTime(int totalTurnaroundTime) {
+        this.totalTurnaroundTime = totalTurnaroundTime;
+    }
+    public void setTotalWaitingTime(int totalWaitingTime) {
+        this.totalWaitingTime = totalWaitingTime;
+    }
+    public float getAvgWaiting(){
+        return (float) totalWaitingTime / processes.size();
+    }
+    public float getAvgTurnAround(){
+        return (float) totalTurnaroundTime / processes.size();
+    }
 }
 
 class Pair<F, S> {
