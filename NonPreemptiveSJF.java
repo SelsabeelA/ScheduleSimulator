@@ -38,11 +38,12 @@ public class NonPreemptiveSJF {
     		addAndSort();
     		executeAndRemove(contextSwitchTime);
     	}
-    	
+    	totalWaiting /= inputProcesses.size();
+	totalTurnaround /= inputProcesses.size();
     	//print the Average Waiting and Turnaround Time
         System.out.println("================================");
-    	System.out.println("Average Waiting Time for Processes was: " + totalWaiting/inputProcesses.size());
-    	System.out.println("Average Turnaround Time for Processes was: " + totalTurnaround/inputProcesses.size());
+    	System.out.println("Average Waiting Time for Processes was: " + totalWaiting);
+    	System.out.println("Average Turnaround Time for Processes was: " + totalTurnaround);
         System.out.println("================================");
     }
     
