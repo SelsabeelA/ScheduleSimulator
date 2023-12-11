@@ -30,7 +30,11 @@ public class NonPreemptivePS {
             startTime = Math.max(currentTime, process.getArrivalTime());
         	process.setExecutionOrder(executionCount++);
             System.out.println("Executing Process " + process.getName() + " with Priority " + process.getPriority());
-            executionList.add(new Pair<>(process, startTime));
+            int processTimer = startTime;
+            for(int i=0;i<process.getBurstTime();i++) {
+                executionList.add(new Pair<>(process, processTimer));
+                processTimer++;
+            }
             currentTime += process.getBurstTime() + contextSwitchTime;
             
             process.setTurnAroundTime(currentTime - process.getArrivalTime());
