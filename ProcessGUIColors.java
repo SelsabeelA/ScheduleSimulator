@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ProcessGUIColors extends JFrame {
 
     private List<ProcessBox> processBoxes;
@@ -14,9 +15,11 @@ public class ProcessGUIColors extends JFrame {
     // Add JLabels to display statistics
     private JLabel avgWaitingLabel;
     private JLabel avgTurnAroundLabel;
+    private JLabel schedulerTypeLabel;
 
     // Add JLabels to display statistics
     private JLabel statisticsLabel;
+
 
     public ProcessGUIColors(List<Pair<Process, Integer>> executionOrder) {
         super("CPU Scheduling Graph");
@@ -74,15 +77,20 @@ public class ProcessGUIColors extends JFrame {
         // Add the labels for average waiting time and average turn around time
         avgWaitingLabel = new JLabel("Average Waiting Time: ");
         avgTurnAroundLabel = new JLabel("Average Turn Around Time: ");
+        schedulerTypeLabel = new JLabel("Scheduler Name: ");
+
 
         statisticsPanel.add(avgWaitingLabel);
         statisticsPanel.add(avgTurnAroundLabel);
+        statisticsPanel.add(avgTurnAroundLabel);
+
 
         mainPanel.add(statisticsPanel, BorderLayout.SOUTH);
 
         setContentPane(mainPanel);
     }
 
+    
     // Utility method to convert a string to Color
     private Color getColorFromString(String colorString) {
         switch (colorString.toLowerCase()) {
@@ -176,5 +184,25 @@ public class ProcessGUIColors extends JFrame {
     public void setAvgTurnAroundTime(float avgTurnAroundTime) {
         avgTurnAroundLabel.setText("Average Turn Around Time: " + avgTurnAroundTime);
     }
+
+	public void setSchedulerType(int schedulerType) {
+		if(schedulerType == 1) {
+			//Non-Preemptive SJF Scheduler
+			schedulerTypeLabel.setText("Non-Preemptive Shortest Job First Scheduler");
+		}
+		else if(schedulerType == 2) {
+			//Shortest-Remaining Time First Scheduler
+			schedulerTypeLabel.setText("Shortest-Remaining Time First Scheduler");
+		}
+		else if(schedulerType == 3) {
+			// Non-preemptive Priority Scheduler
+			schedulerTypeLabel.setText("Non-preemptive Priority Scheduler");
+		}
+		else if(schedulerType == 4) {
+			//AGScheduling Scheduler
+			schedulerTypeLabel.setText("AG Scheduler");
+		}
+		
+	}
 }
 
