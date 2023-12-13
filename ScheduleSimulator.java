@@ -80,8 +80,8 @@ avgWaitingTime = NonPreemptiveSJF.getAvgWaiting();
             SRTF srtfScheduler = new SRTF(processes, contextSwitchTime);
             srtfScheduler.runScheduler();
             execOrder = srtfScheduler.getExecutionOrder();
-//avgWaitingTime = srtfScheduler.getAvgWaiting(); 
-        	//avgTurnAroundTime = srtfScheduler.getAvgTurnAround();
+		avgWaitingTime = srtfScheduler.getAvgWaiting(); 
+        	avgTurnAroundTime = srtfScheduler.getAvgTurnAround();
             break;
 
         case 3:
