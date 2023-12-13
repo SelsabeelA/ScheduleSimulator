@@ -40,6 +40,7 @@ public class NonPreemptiveSJF {
     	}
     	totalWaiting /= inputProcesses.size();
 	totalTurnaround /= inputProcesses.size();
+
     	//print the Average Waiting and Turnaround Time
         System.out.println("================================");
     	System.out.println("Average Waiting Time for Processes was: " + totalWaiting);
