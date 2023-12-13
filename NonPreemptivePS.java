@@ -15,9 +15,12 @@ public class NonPreemptivePS {
     private static final int AGING_THRESHOLD = 7;
 
     public static void schedule(List<Process> processes, int contextSwitchTime) {
-        Collections.sort(processes, Comparator.comparingInt(Process::getPriority));
+        // Sort processes by arrival time then after that by priority
+        Collections.sort(processes, Comparator.comparingInt(Process::getArrivalTime).thenComparingInt(Process::getPriority));
         printInformation(processes, contextSwitchTime);
     }
+
+
 
     private static void printInformation(List<Process> processes, int contextSwitchTime) {
         int waitingTimeSum = 0;
