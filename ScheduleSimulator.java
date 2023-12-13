@@ -71,7 +71,7 @@ public class ScheduleSimulator {
         	//scheduler.schedule(processes, contextSwitchTime);
         	NonPreemptiveSJF.schedule(processes, contextSwitchTime);
         	execOrder = NonPreemptiveSJF.getExecutionOrder();
-avgWaitingTime = NonPreemptiveSJF.getAvgWaiting(); 
+        	avgWaitingTime = NonPreemptiveSJF.getAvgWaiting(); 
         	avgTurnAroundTime = NonPreemptiveSJF.getAvgTurnAround();
             break;
 
@@ -80,7 +80,7 @@ avgWaitingTime = NonPreemptiveSJF.getAvgWaiting();
             SRTF srtfScheduler = new SRTF(processes, contextSwitchTime);
             srtfScheduler.runScheduler();
             execOrder = srtfScheduler.getExecutionOrder();
-		avgWaitingTime = srtfScheduler.getAvgWaiting(); 
+            avgWaitingTime = srtfScheduler.getAvgWaiting(); 
         	avgTurnAroundTime = srtfScheduler.getAvgTurnAround();
             break;
 
@@ -97,9 +97,9 @@ avgWaitingTime = NonPreemptiveSJF.getAvgWaiting();
 
         case 4:
         AGScheduling.schedule(processes, rrQuantumTime);
-execOrder = AGScheduling.getExecutionOrder();
-            avgWaitingTime = AGScheduling.getAverageWaitingTime(); 
-        	avgTurnAroundTime = AGScheduling.getAverageTurnaroundTime();
+        execOrder = AGScheduling.getExecutionOrder();
+        avgWaitingTime = AGScheduling.getAverageWaitingTime(); 
+        avgTurnAroundTime = AGScheduling.getAverageTurnaroundTime();
             
         break;
 
