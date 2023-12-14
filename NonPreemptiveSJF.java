@@ -3,14 +3,6 @@
 // remove each executed process from the queue
 // increment the current time by one each time a process is executed
 
-//process queue
-// current time = first process's arrival time
-// for each process:
-// add all processes with arrival time <= current time
-// sort the queue
-// execute the process
-// remove the process from the queue
-// increment the current time by the CONTEXT SWITCH time
 package cpuScheduler;
 
 import java.util.Collections;
@@ -22,22 +14,25 @@ public class NonPreemptiveSJF {
 
 	private static List<Process> SJP;
 	private static List<Process> processes;
-    private static List<Pair<Process, Integer>> executionOrder;
+    	private static List<Pair<Process, Integer>> executionOrder;
 	private static int currentTime;
 	private static float totalTurnaround = 0;
 	private static float totalWaiting = 0;
 	
     public static void schedule(List<Process> inputProcesses, int contextSwitchTime) {
-    	
     	SJP = new ArrayList<>();
-    	processes = new ArrayList<>(inputProcesses);
+    	//get the processes queue
+	processes = new ArrayList<>(inputProcesses);
         executionOrder = new ArrayList<>();
+	// current time = first process's arrival time
     	currentTime = processes.get(0).getArrivalTime();
-    	
+
+	// for each process:
     	while (!processes.isEmpty()) {
     		addAndSort();
     		executeAndRemove(contextSwitchTime);
     	}
+
     	totalWaiting /= inputProcesses.size();
 	totalTurnaround /= inputProcesses.size();
 
@@ -51,12 +46,14 @@ public class NonPreemptiveSJF {
     private static void addAndSort() {
     	
     	int i = 0;
-    	//add the arrived processes to the queue in order to be sorted
+	// Add only the arrived processes [with arrival time <= current time], to be sorted
+	// And remove it from the original processes queue
         while (i < processes.size() && processes.get(i).getArrivalTime() <= currentTime) {
             SJP.add(processes.get(i));
             processes.remove(i);
         }
-        //sort the added processes
+
+        //sort the added processes according to their burst time
     	Collections.sort(SJP, Comparator.comparingInt(Process::getBurstTime));
     	
     }
@@ -82,7 +79,7 @@ public class NonPreemptiveSJF {
 
     }
     
-    private static void addProcessToGUI(Process p) {
+    private static void addProcessToGUI(Process p) { // Add each process and the time it was executed
     	for (int i = 0; i < p.getBurstTime(); i++) {
             executionOrder.add(new Pair<>(p, i + currentTime));
     	}
@@ -103,17 +100,17 @@ public class NonPreemptiveSJF {
         System.out.println("================================");
 		System.out.println("Executing " + currentProcess);
 		
-		//turn around time
+		// Turnaround time
 		int turnaroundTime = currentTime - currentProcess.getArrivalTime();
 		System.out.println("Turnaround Time: " + turnaroundTime);
 		
-		//waiting time
+		// Waiting time
 		int waitingTime = turnaroundTime - currentProcess.getBurstTime();
 		System.out.println("Waiting Time: " + waitingTime);
 		
-		// add to total waiting
+		// Add to total waiting
 		totalWaiting += waitingTime;
-		// add to total turn around
+		// Add to total turnaround
 		totalTurnaround += turnaroundTime;
 		
     }
