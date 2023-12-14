@@ -79,6 +79,7 @@ public class ProcessGUIColors extends JFrame {
         avgTurnAroundLabel = new JLabel("Average Turn Around Time: ");
         schedulerTypeLabel = new JLabel("Scheduler Name: ");
 
+        statisticsPanel.add(schedulerTypeLabel);
 
         statisticsPanel.add(avgWaitingLabel);
         statisticsPanel.add(avgTurnAroundLabel);
@@ -188,21 +189,20 @@ public class ProcessGUIColors extends JFrame {
 	public void setSchedulerType(int schedulerType) {
 		if(schedulerType == 1) {
 			//Non-Preemptive SJF Scheduler
-			schedulerTypeLabel.setText("Non-Preemptive Shortest Job First Scheduler");
+			schedulerTypeLabel.setText("Scheduler: Non-Preemptive Shortest Job First Scheduler");
 		}
 		else if(schedulerType == 2) {
 			//Shortest-Remaining Time First Scheduler
-			schedulerTypeLabel.setText("Shortest-Remaining Time First Scheduler");
+			schedulerTypeLabel.setText("Scheduler: Shortest-Remaining Time First Scheduler");
 		}
 		else if(schedulerType == 3) {
 			// Non-preemptive Priority Scheduler
-			schedulerTypeLabel.setText("Non-preemptive Priority Scheduler");
+			schedulerTypeLabel.setText("Scheduler: Non-preemptive Priority Scheduler");
 		}
 		else if(schedulerType == 4) {
 			//AGScheduling Scheduler
-			schedulerTypeLabel.setText("AG Scheduler");
+			schedulerTypeLabel.setText("Scheduler: AG Scheduler");
 		}
 		
 	}
 }
-
