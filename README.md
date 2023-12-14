@@ -1,4 +1,4 @@
-# ScheduleSimulator
+# Schedule Simulator
 
 ## Authors
 - Roaa Fathi Nada                 20210140
