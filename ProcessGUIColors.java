@@ -1,4 +1,4 @@
-//package cpuScheduler;
+package cpuScheduler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
