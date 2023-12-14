@@ -33,6 +33,7 @@ public class NonPreemptiveSJF {
     		executeAndRemove(contextSwitchTime);
     	}
 
+	// Get the Average Waiting and Turnaround Time
     	totalWaiting /= inputProcesses.size();
 	totalTurnaround /= inputProcesses.size();
 
