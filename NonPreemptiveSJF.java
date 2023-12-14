@@ -1,7 +1,7 @@
-// sort process with arrival time = 0, start with the first one
-// each process's arrival time is <= the current time, add the process to the queue and sort it
-// remove each executed process from the queue
-// increment the current time by one each time a process is executed
+// Sort process with arrival time = 0, start with the first one
+// Each process's arrival time is <= the current time, add the process to the queue and sort it
+// Remove each executed process from the queue
+// Increment the current time by one each time a process is executed
 
 package cpuScheduler;
 
@@ -21,13 +21,13 @@ public class NonPreemptiveSJF {
 	
     public static void schedule(List<Process> inputProcesses, int contextSwitchTime) {
     	SJP = new ArrayList<>();
-    	//get the processes queue
+    	// Get the processes queue
 	processes = new ArrayList<>(inputProcesses);
         executionOrder = new ArrayList<>();
 	// current time = first process's arrival time
     	currentTime = processes.get(0).getArrivalTime();
 
-	// for each process:
+	// For each process:
     	while (!processes.isEmpty()) {
     		addAndSort();
     		executeAndRemove(contextSwitchTime);
@@ -37,7 +37,7 @@ public class NonPreemptiveSJF {
     	totalWaiting /= inputProcesses.size();
 	totalTurnaround /= inputProcesses.size();
 
-    	//print the Average Waiting and Turnaround Time
+    	// Print the Average Waiting and Turnaround Time
         System.out.println("================================");
     	System.out.println("Average Waiting Time for Processes was: " + totalWaiting);
     	System.out.println("Average Turnaround Time for Processes was: " + totalTurnaround);
@@ -54,27 +54,27 @@ public class NonPreemptiveSJF {
             processes.remove(i);
         }
 
-        //sort the added processes according to their burst time
+        // Sort the added processes according to their burst time
     	Collections.sort(SJP, Comparator.comparingInt(Process::getBurstTime));
     	
     }
     
     private static void executeAndRemove(int contextSwitchTime) {
     	
-    	while (!SJP.isEmpty()) {		//for each process
+    	while (!SJP.isEmpty()) {	// For each process
     		final Process currentProcess = SJP.get(0);
     		
-    		//include the process in the execution order to be visualized later
+    		// Include the process in the execution order to be visualized later
     		addProcessToGUI(currentProcess);
     		    		
-    		//update current time
+    		// Update current time
     		currentTime += currentProcess.getBurstTime();
     		currentTime += contextSwitchTime;
     		
-    		//print the process info
+    		// Print the process info
     		printInfo(currentProcess);
 
-    		//remove the process
+    		// Remove the process
     		SJP.remove(0);
     	}
 
