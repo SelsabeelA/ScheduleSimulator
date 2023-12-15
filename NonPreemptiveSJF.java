@@ -3,7 +3,7 @@
 // Remove each executed process from the queue
 // Increment the current time by one each time a process is executed
 
-//package cpuScheduler;
+package cpuScheduler;
 
 import java.util.Collections;
 import java.util.ArrayList;
