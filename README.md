@@ -47,9 +47,9 @@ For Each Process you need to receive the following parameters from the user:
 - SRTF + Bonus.
 > [Basma Mahmoud](https://github.com/Basma2423)
 - Non-Preemptive SJF + Bonus.
-> [Selsabeel](https://github.com/SelsabeelA) 
+> [Selsabeel Asim](https://github.com/SelsabeelA) 
 - Non-Preemptive PS + Main.
-> Yousef 
+> [Yousef Alaa](https://github.com/yousefalaa2021)
 - AG Scheduling.
-> [Mostafa](https://github.com/mostafafathy14)
+> [Mostafa Fathy](https://github.com/mostafafathy14)
 - AG Scheduling.
