@@ -1,11 +1,11 @@
 # Schedule Simulator
 
 ## Authors
-- Roaa Fathi Nada                 20210140
-- Basma Mahmoud Hashem Ali        20210091
-- Selsabeel Asim Ali Elbagir      20210714
-- Yousef Alaa                     20210478
-- Mostafa Fathy                   20210395
+- Roaa Fathi                  
+- Basma Mahmoud Hashem Ali        
+- Selsabeel Asim Ali Elbagir      
+- Yousef Alaa                     
+- Mostafa Fathy                   
 
 ## Description
 The assignment is divided into: 
@@ -43,13 +43,13 @@ For Each Process you need to receive the following parameters from the user:
 - BOUNS: graphical representation of Processes execution order
 
 ## Work Distribution
-> Roaa Fathi 
+> [Roaa Fathi ](https://github.com/rFathi03)
 - SRTF + Bonus.
-> Basma Mahmoud
+> [Basma Mahmoud](https://github.com/Basma2423)
 - Non-Preemptive SJF + Bonus.
-> Selsabeel 
+> [Selsabeel](https://github.com/SelsabeelA) 
 - Non-Preemptive PS + Main.
 > Yousef 
 - AG Scheduling.
-> Mostafa
+> [Mostafa](https://github.com/mostafafathy14)
 - AG Scheduling.
